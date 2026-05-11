@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}NorthLex — Legal Help for Northeast India{% endblock %}
+
+{% block body %}
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <a href="/" class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-light flex items-center justify-center">
+        <span class="text-white font-bold text-sm">NL</span>
+      </div>
+      <span class="font-display font-bold text-xl text-secondary">NorthLex</span>
+    </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-text-muted">
+      <a href="/northeast-hub/" class="hover:text-primary transition-colors">Law Hub</a>
+      <a href="{% url 'accounts:otp_request' %}" class="bg-primary text-white px-5 py-2 rounded-full hover:bg-primary-light transition-colors">Login / Register</a>
+    </div>
+    <a href="{% url 'accounts:otp_request' %}" class="md:hidden bg-primary text-white px-4 py-2 rounded-full text-sm">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="min-h-screen flex items-center bg-gradient-to-br from-secondary via-primary to-primary-light pt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 grid lg:grid-cols-2 gap-16 items-center">
+    <div class="text-white" x-data x-init="$el.classList.add('animate-fade-in')">
+      <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm mb-6">
+        <span class="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+        Legal Help for Northeast India
+      </div>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+        Justice is a <span class="text-accent">Right</span>,<br />Not a Privilege.
+      </h1>
+      <p class="text-white/80 text-lg mb-8 leading-relaxed">
+        Connect with verified advocates across all 8 Northeast states. Book district, high court, and Supreme Court AOR lawyers — from your phone, in minutes.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="{% url 'accounts:otp_request' %}" class="bg-accent text-secondary font-semibold px-8 py-3.5 rounded-full hover:bg-yellow-400 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          Get Legal Help →
+        </a>
+        <a href="/northeast-hub/" class="border border-white/30 text-white px-8 py-3.5 rounded-full hover:bg-white/10 transition-all">
+          Explore Law Hub
+        </a>
+      </div>
+      <!-- Stats -->
+      <div class="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/20">
+        <div>
+          <div class="font-display text-3xl font-bold text-accent">8</div>
+          <div class="text-white/70 text-sm mt-1">NE States Covered</div>
+        </div>
+        <div>
+          <div class="font-display text-3xl font-bold text-accent">HC + SC</div>
+          <div class="text-white/70 text-sm mt-1">AOR Access</div>
+        </div>
+        <div>
+          <div class="font-display text-3xl font-bold text-accent">100%</div>
+          <div class="text-white/70 text-sm mt-1">Verified Advocates</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm mx-auto lg:ml-auto">
+      <h2 class="font-display text-2xl font-bold text-secondary mb-2">Get Started</h2>
+      <p class="text-text-muted text-sm mb-6">Login with your mobile number — no password needed.</p>
+      <a href="{% url 'accounts:otp_request' %}" class="block w-full bg-primary text-white text-center font-semibold py-3.5 rounded-xl hover:bg-primary-light transition-colors mb-4">
+        Login with Mobile OTP
+      </a>
+      <div class="relative my-4">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+        <div class="relative text-center text-sm text-text-muted bg-white px-3 w-fit mx-auto">or</div>
+      </div>
+      <a href="{% url 'socialaccount_signup' %}" class="flex items-center justify-center gap-3 w-full border border-gray-200 text-text-primary py-3 rounded-xl hover:bg-gray-50 transition-colors text-sm font-medium">
+        <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </a>
+      <p class="text-center text-xs text-text-muted mt-4">
+        By continuing, you agree to our Terms & Privacy Policy.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="font-display text-3xl sm:text-4xl font-bold text-secondary mb-4">Why NorthLex?</h2>
+      <p class="text-text-muted max-w-xl mx-auto">Built specifically for the unique legal landscape of Northeast India.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for feature in features %}
+      <div class="group p-6 rounded-2xl border border-gray-100 hover:border-primary/20 hover:shadow-lg transition-all hover:-translate-y-1">
+        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-2xl">{{ feature.icon }}</div>
+        <h3 class="font-display font-semibold text-secondary text-lg mb-2">{{ feature.title }}</h3>
+        <p class="text-text-muted text-sm leading-relaxed">{{ feature.desc }}</p>
+      </div>
+      {% empty %}
+      {% for feature in "123456"|make_list %}
+      <div class="p-6 rounded-2xl border border-gray-100 hover:shadow-lg transition-all hover:-translate-y-1 hover:border-primary/20">
+        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 text-2xl">
+          {{ forloop.counter|divisibleby:1|yesno:"⚖️,📋,🏛️,💬,🗺️,🔒" }}
+        </div>
+        <div class="h-4 bg-gray-100 rounded w-3/4 mb-2"></div>
+        <div class="h-3 bg-gray-100 rounded w-full mb-1"></div>
+        <div class="h-3 bg-gray-100 rounded w-5/6"></div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-secondary text-white py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="font-display text-2xl font-bold mb-2">NorthLex</div>
+    <p class="text-white/60 text-sm">Northeast Legal Portal — Justice for All</p>
+    <div class="mt-6 flex justify-center gap-6 text-sm text-white/50">
+      <a href="#" class="hover:text-white transition-colors">Terms</a>
+      <a href="#" class="hover:text-white transition-colors">Privacy</a>
+      <a href="/northeast-hub/" class="hover:text-white transition-colors">Law Hub</a>
+    </div>
+  </div>
+</footer>
+{% endblock %}

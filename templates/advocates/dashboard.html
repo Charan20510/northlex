@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Advocate Dashboard — NorthLex{% endblock %}
+{% block body %}
+<div class="min-h-screen bg-bg-main flex items-center justify-center">
+  <div class="text-center">
+    <div class="font-display text-3xl font-bold text-secondary mb-2">Advocate Portal</div>
+    <p class="text-text-muted">Welcome, {{ user.get_full_name|default:user.username }}</p>
+    <a href="{% url 'accounts:logout' %}" class="mt-4 inline-block text-sm text-primary hover:underline">Logout</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Complete Your Profile — NorthLex{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-bg-main flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-lg">
+    <div class="text-center mb-8">
+      <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <span class="text-white font-bold text-xl font-display">NL</span>
+      </div>
+      <h1 class="font-display text-2xl font-bold text-secondary">Complete Your Profile</h1>
+      <p class="text-text-muted text-sm mt-1">Just a few details to get you started</p>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-lg p-8">
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Role Selection -->
+        <div class="mb-6">
+          <p class="text-sm font-medium text-text-primary mb-3">I am registering as:</p>
+          <div class="grid grid-cols-2 gap-3">
+            {% for value, label in role_form.role.field.choices %}
+            <label class="relative cursor-pointer">
+              <input type="radio" name="role" value="{{ value }}" class="peer sr-only"
+                     {% if forloop.first %}checked{% endif %} />
+              <div class="border-2 border-gray-200 rounded-xl p-4 text-center peer-checked:border-primary peer-checked:bg-primary/5 transition-all">
+                <div class="text-2xl mb-1">{{ forloop.counter|divisibleby:2|yesno:"⚖️,👤" }}</div>
+                <div class="text-sm font-medium text-text-primary">{{ label }}</div>
+              </div>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-text-primary mb-1.5">First Name</label>
+            <input type="text" name="first_name" placeholder="Ramesh"
+                   class="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-all"
+                   value="{{ profile_form.first_name.value|default:'' }}" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-text-primary mb-1.5">Last Name</label>
+            <input type="text" name="last_name" placeholder="Bora"
+                   class="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-all"
+                   value="{{ profile_form.last_name.value|default:'' }}" />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-text-primary mb-1.5">Email Address <span class="text-text-muted">(optional)</span></label>
+          <input type="email" name="email" placeholder="you@example.com"
+                 class="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-all"
+                 value="{{ profile_form.email.value|default:'' }}" />
+          {% if profile_form.email.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ profile_form.email.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-text-primary mb-1.5">Profile Photo <span class="text-text-muted">(optional)</span></label>
+          <input type="file" name="profile_photo" accept="image/*"
+                 class="w-full text-sm text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all" />
+        </div>
+
+        <button type="submit" class="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-light transition-colors">
+          Complete Profile →
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

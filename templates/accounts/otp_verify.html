@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Verify OTP — NorthLex{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-br from-secondary to-primary flex items-center justify-center px-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <a href="/" class="inline-flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+          <span class="text-white font-bold">NL</span>
+        </div>
+        <span class="font-display text-2xl font-bold text-white">NorthLex</span>
+      </a>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-2xl p-8" x-data="otpTimer()" x-init="startTimer()">
+      <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+      </div>
+
+      <h1 class="font-display text-2xl font-bold text-secondary text-center mb-1">Enter OTP</h1>
+      <p class="text-text-muted text-sm text-center mb-6">
+        6-digit OTP sent to <span class="font-medium text-text-primary">{{ mobile }}</span>
+      </p>
+
+      <form method="post" x-data="{ loading: false }" @submit="loading = true">
+        {% csrf_token %}
+        <input type="hidden" name="mobile" value="{{ mobile }}" />
+
+        <div class="mb-6">
+          <input type="text" name="otp_code" maxlength="6" inputmode="numeric" placeholder="• • • • • •"
+                 class="w-full text-center text-3xl font-mono tracking-[1rem] border border-gray-200 rounded-xl py-4 outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                 autofocus required />
+          {% if form.otp_code.errors %}
+          <p class="text-red-500 text-xs text-center mt-2">{{ form.otp_code.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <button type="submit" :disabled="loading"
+                class="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary-light transition-colors flex items-center justify-center gap-2 disabled:opacity-70">
+          <span x-show="!loading">Verify OTP →</span>
+          <span x-show="loading" x-cloak>Verifying…</span>
+        </button>
+      </form>
+
+      <div class="text-center mt-5 text-sm text-text-muted">
+        <span x-show="timeLeft > 0">Resend in <span class="font-medium text-primary" x-text="timeLeft + 's'"></span></span>
+        <span x-show="timeLeft === 0" x-cloak>
+          Didn't receive it?
+          <a href="{% url 'accounts:resend_otp' %}" class="text-primary font-medium hover:underline ml-1">Resend OTP</a>
+        </span>
+      </div>
+
+      <div class="text-center mt-3">
+        <a href="{% url 'accounts:otp_request' %}" class="text-xs text-text-muted hover:text-primary transition-colors">← Change number</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function otpTimer() {
+  return {
+    timeLeft: 60,
+    startTimer() {
+      const interval = setInterval(() => {
+        if (this.timeLeft > 0) this.timeLeft--;
+        else clearInterval(interval);
+      }, 1000);
+    }
+  }
+}
+</script>
+{% endblock %}
