@@ -1,4 +1,9 @@
-venv/
+.env
+.env.example
+/.CLAUDE.md
+/.PROMPT.md
+
+/.venv/
 __pycache__/
 *.pyc
 *.pyo
@@ -33,8 +38,3 @@ node_modules/
 .coverage
 htmlcov/
 .pytest_cache/
-
-.env
-.env.example
-CLAUDE.md
-PROMPT.md
