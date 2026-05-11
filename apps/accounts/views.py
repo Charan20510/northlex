@@ -6,7 +6,7 @@ from django.views.decorators.cache import never_cache
 
 from .models import OTPVerification
 from .forms import MobileOTPRequestForm, OTPVerifyForm, RoleSelectForm, ProfileSetupForm
-from .utils import send_otp_sms, normalize_mobile
+from .utils import send_otp_sms, send_otp_email, normalize_mobile
 
 User = get_user_model()
 
@@ -24,14 +24,26 @@ def otp_request(request):
     form = MobileOTPRequestForm(request.POST or None)
     if request.method == 'POST' and form.is_valid():
         mobile = form.cleaned_data['mobile']
+        email = form.cleaned_data.get('email', '')
         user, created = User.objects.get_or_create(
             mobile=mobile,
             defaults={'username': mobile, 'is_mobile_verified': False},
         )
+        if email and user.email != email:
+            user.email = email
+            user.save(update_fields=['email'])
         otp = OTPVerification.generate_otp(user, mobile)
-        send_otp_sms(mobile, otp.otp_code)
+        sms_sent = send_otp_sms(mobile, otp.otp_code)
+        email_sent = send_otp_email(email or user.email, otp.otp_code, mobile=mobile)
         request.session['otp_mobile'] = mobile
-        messages.info(request, f'OTP sent to {mobile}.')
+        if sms_sent and email_sent:
+            messages.success(request, f'OTP sent to {mobile} and {email or user.email}.')
+        elif sms_sent:
+            messages.success(request, f'OTP sent to {mobile}.')
+        elif email_sent:
+            messages.success(request, f'OTP sent to {email or user.email}.')
+        else:
+            messages.error(request, 'OTP could not be sent right now. Please try again.')
         return redirect('accounts:otp_verify')
     return render(request, 'accounts/otp_request.html', {'form': form})
 

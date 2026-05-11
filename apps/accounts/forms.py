@@ -7,10 +7,15 @@ User = get_user_model()
 
 class MobileOTPRequestForm(forms.Form):
     mobile = forms.CharField(max_length=15, label='Mobile Number')
+    email = forms.EmailField(required=False, label='Email Address')
 
     def clean_mobile(self):
         mobile = self.cleaned_data['mobile']
         return normalize_mobile(mobile)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip().lower()
+        return email
 
 
 class OTPVerifyForm(forms.Form):

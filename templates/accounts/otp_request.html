@@ -17,7 +17,7 @@
 
     <div class="bg-white rounded-3xl shadow-2xl p-8" x-data="{ loading: false }">
       <h1 class="font-display text-2xl font-bold text-secondary mb-1">Welcome Back</h1>
-      <p class="text-text-muted text-sm mb-6">Enter your mobile number to receive a 6-digit OTP.</p>
+      <p class="text-text-muted text-sm mb-6">Enter your mobile number and email to receive a 6-digit OTP.</p>
 
       <form method="post" @submit="loading = true">
         {% csrf_token %}
@@ -31,6 +31,16 @@
           </div>
           {% if form.mobile.errors %}
           <p class="text-red-500 text-xs mt-1">{{ form.mobile.errors.0 }}</p>
+          {% endif %}
+        </div>
+
+        <div class="mb-5">
+          <label class="block text-sm font-medium text-text-primary mb-1.5">Email Address <span class="text-text-muted font-normal">(optional)</span></label>
+          <input type="email" name="email" placeholder="you@example.com"
+                 class="w-full px-4 py-3 border border-gray-200 rounded-xl outline-none text-text-primary text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                 value="{{ form.email.value|default:'' }}" />
+          {% if form.email.errors %}
+          <p class="text-red-500 text-xs mt-1">{{ form.email.errors.0 }}</p>
           {% endif %}
         </div>
 

@@ -1,5 +1,6 @@
 import re
 import requests
+from django.core.mail import send_mail
 from django.conf import settings
 
 PHONE_PATTERN = re.compile(r'[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}')
@@ -13,17 +14,50 @@ def send_otp_sms(mobile: str, otp_code: str) -> bool:
         print(f'[DEV OTP] Mobile: {mobile}  OTP: {otp_code}')
         return True
 
+    digits = re.sub(r'\D', '', mobile)
+    if digits.startswith('91') and len(digits) > 10:
+        digits = digits[-10:]
+
     url = 'https://www.fast2sms.com/dev/bulkV2'
     payload = {
         'authorization': api_key,
         'variables_values': otp_code,
         'route': 'otp',
-        'numbers': mobile.lstrip('+').lstrip('91'),
+        'numbers': digits,
     }
     try:
         resp = requests.post(url, data=payload, timeout=10)
         data = resp.json()
         return data.get('return', False)
+    except Exception:
+        return False
+
+
+def send_otp_email(email: str, otp_code: str, mobile: str | None = None) -> bool:
+    """Send OTP to email. Returns True when the mail backend accepts it."""
+    if not email:
+        return False
+
+    subject = 'Your NorthLex OTP'
+    message_lines = [
+        'Your NorthLex login OTP is:',
+        '',
+        otp_code,
+        '',
+        'This OTP is valid for 10 minutes.',
+    ]
+    if mobile:
+        message_lines.extend(['', f'Mobile: {mobile}'])
+
+    try:
+        send_mail(
+            subject=subject,
+            message='\n'.join(message_lines),
+            from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', None),
+            recipient_list=[email],
+            fail_silently=False,
+        )
+        return True
     except Exception:
         return False
 
